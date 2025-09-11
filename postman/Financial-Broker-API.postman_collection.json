@@ -1,0 +1,375 @@
+{
+  "info": {
+    "name": "Financial Broker API - UTN",
+    "description": "Colección completa para probar la API de broker financiero. Proyecto educativo de Metodología de Sistemas II.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "apiKey",
+      "value": "demo-key-123",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Validate API Key",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/validate",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "validate"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "User Management",
+      "item": [
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "profile"]
+            }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"nuevo_email@example.com\",\n  \"riskTolerance\": \"high\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "profile"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Market Data",
+      "item": [
+        {
+          "name": "Get All Prices",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/market/prices",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "market", "prices"]
+            }
+          }
+        },
+        {
+          "name": "Get Price by Symbol",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/market/prices/AAPL",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "market", "prices", "AAPL"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Trading Operations",
+      "item": [
+        {
+          "name": "Buy Asset (Market Order)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"symbol\": \"AAPL\",\n  \"quantity\": 10,\n  \"orderType\": \"market\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/trading/buy",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trading", "buy"]
+            }
+          }
+        },
+        {
+          "name": "Buy Asset (Limit Order)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"symbol\": \"GOOGL\",\n  \"quantity\": 2,\n  \"orderType\": \"limit\",\n  \"limitPrice\": 2400.00\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/trading/buy",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trading", "buy"]
+            }
+          }
+        },
+        {
+          "name": "Sell Asset (Market Order)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"symbol\": \"AAPL\",\n  \"quantity\": 5,\n  \"orderType\": \"market\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/trading/sell",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trading", "sell"]
+            }
+          }
+        },
+        {
+          "name": "Sell Asset (Limit Order)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-api-key",  
+                "value": "{{apiKey}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"symbol\": \"GOOGL\",\n  \"quantity\": 1,\n  \"orderType\": \"limit\",\n  \"limitPrice\": 2600.00\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/trading/sell",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trading", "sell"]
+            }
+          }
+        },
+        {
+          "name": "Get Transaction History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trading/history",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trading", "history"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Portfolio Management",
+      "item": [
+        {
+          "name": "Get Portfolio",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/portfolio",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "portfolio"]
+            }
+          }
+        },
+        {
+          "name": "Get Performance",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/portfolio/performance",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "portfolio", "performance"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Analysis & Reports",
+      "item": [
+        {
+          "name": "Risk Analysis",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/analysis/risk",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "analysis", "risk"]
+            }
+          }
+        },
+        {
+          "name": "Investment Recommendations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/analysis/recommendations",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "analysis", "recommendations"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "System Info",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            }
+          }
+        },
+        {
+          "name": "API Info",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/",
+              "host": ["{{baseUrl}}"],
+              "path": [""]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

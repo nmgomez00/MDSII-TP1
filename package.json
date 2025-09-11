@@ -1,0 +1,41 @@
+{
+  "name": "financial-broker-api",
+  "version": "1.0.0",
+  "description": "API de broker financiero - Metodología de Sistemas II",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "NODE_ENV=development ts-node src/index.ts",
+    "watch": "NODE_ENV=development nodemon --exec ts-node src/index.ts",
+    "watch:build": "tsc --watch",
+    "start:watch": "nodemon dist/index.js",
+    "dev:full": "./dev.sh"
+  },
+  "keywords": [
+    "financial",
+    "broker",
+    "api",
+    "trading",
+    "typescript"
+  ],
+  "author": "Jacobo Dominguez",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "helmet": "^7.0.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.5.0",
+    "@types/swagger-jsdoc": "^6.0.1",
+    "@types/swagger-ui-express": "^4.1.3",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  }
+}
