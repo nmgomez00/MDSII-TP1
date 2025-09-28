@@ -4,11 +4,12 @@ import { TradingService } from "../services/TradingService";
 import { MarketAnalysisService } from "../services/MarketAnalysisService";
 import { MarketSimulationService } from "../services/MarketSimulationService";
 import { storage } from "../utils/storage";
+import {RiskLevels} from "../models/types";
 
 // Instancias de servicios - Candidato para Dependency Injection
 const tradingService = new TradingService();
 const analysisService = new MarketAnalysisService();
-const marketSimulation = new MarketSimulationService();
+const marketSimulation = MarketSimulationService.getInstance();
 
 // Controlador de autenticación
 export class AuthController {
@@ -71,8 +72,7 @@ export class UserController {
           message: "El email debe ser una cadena válida",
         });
       }
-
-      if (riskTolerance && !["low", "medium", "high"].includes(riskTolerance)) {
+      if (riskTolerance && !RiskLevels.includes(riskTolerance)) {
         return res.status(400).json({
           error: "Tolerancia al riesgo inválida",
           message: "La tolerancia al riesgo debe ser: low, medium o high",

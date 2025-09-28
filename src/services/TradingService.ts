@@ -6,6 +6,8 @@ import {
   User,
   Portfolio,
   PortfolioHolding,
+  OrderType,
+  TransactionType,
 } from "../models/types";
 import { storage } from "../utils/storage";
 import { config } from "../config/config";
@@ -142,7 +144,7 @@ export class TradingService {
   }
 
   // Cálculo de comisiones
-  private calculateFees(amount: number, type: "buy" | "sell"): number {
+  private calculateFees(amount: number, type: TransactionType): number {
     const feePercentage =
       type === "buy"
         ? config.tradingFees.buyFeePercentage
@@ -207,7 +209,7 @@ export class TradingService {
   private simulateMarketImpact(
     symbol: string,
     quantity: number,
-    action: "buy" | "sell"
+    action: TransactionType
   ): void {
     const marketData = storage.getMarketDataBySymbol(symbol);
     if (!marketData) return;

@@ -100,7 +100,7 @@ app.use(
 );
 
 // Inicializar simulación de mercado
-const marketSimulation = new MarketSimulationService();
+const marketSimulation = MarketSimulationService.getInstance();
 
 // Función para iniciar el servidor
 function startServer() {

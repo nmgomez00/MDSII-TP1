@@ -4,8 +4,20 @@ import { storage } from "../utils/storage";
 import { config } from "../config/config";
 
 export class MarketSimulationService {
+  // Instancia singleton
+  private static instance: MarketSimulationService;
   private isRunning: boolean = false;
   private intervalId: NodeJS.Timeout | null = null;
+  
+  private constructor() {}
+
+  // aplicamos el patrón singleton
+  public static getInstance(): MarketSimulationService {
+    if (!MarketSimulationService.instance) {
+      MarketSimulationService.instance = new MarketSimulationService();
+    }
+    return MarketSimulationService.instance;
+  }
 
   // Iniciar simulación de mercado
   startMarketSimulation(): void {

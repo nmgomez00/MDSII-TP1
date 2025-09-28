@@ -6,7 +6,7 @@ export class User {
   email: string;
   apiKey: string;
   balance: number;
-  riskTolerance: "low" | "medium" | "high";
+  riskTolerance: RiskLevel;
   createdAt: Date;
 
   constructor(
@@ -15,7 +15,7 @@ export class User {
     email: string,
     apiKey: string,
     balance: number,
-    riskTolerance: "low" | "medium" | "high"
+    riskTolerance: RiskLevel
   ) {
     this.id = id;
     this.username = username;
@@ -68,18 +68,18 @@ export class Asset {
 export class Transaction {
   id: string;
   userId: string;
-  type: "buy" | "sell";
+  type:  TransactionType;
   symbol: string;
   quantity: number;
   price: number;
   timestamp: Date;
   fees: number;
-  status: "pending" | "completed" | "failed";
+  status: TransactionStatus;
 
   constructor(
     id: string,
     userId: string,
-    type: "buy" | "sell",
+    type: TransactionType,
     symbol: string,
     quantity: number,
     price: number,
@@ -217,20 +217,20 @@ export class Portfolio {
 export class Order {
   id: string;
   userId: string;
-  type: "market";
-  action: "buy" | "sell";
+  type: OrderType;
+  action: TransactionType;
   symbol: string;
   quantity: number;
   price?: number;
-  status: "pending" | "executed" | "cancelled";
+  status: OrderStatus;
   createdAt: Date;
   executedAt?: Date;
 
   constructor(
     id: string,
     userId: string,
-    type: "market",
-    action: "buy" | "sell",
+    type: OrderType,
+    action: TransactionType,
     symbol: string,
     quantity: number,
     price?: number
@@ -258,7 +258,7 @@ export class Order {
 
 export class RiskAnalysis {
   userId: string;
-  portfolioRisk: "low" | "medium" | "high";
+  portfolioRisk: RiskLevel;
   diversificationScore: number;
   recommendations: string[];
   calculatedAt: Date;
@@ -272,7 +272,7 @@ export class RiskAnalysis {
   }
 
   updateRisk(
-    risk: "low" | "medium" | "high",
+    risk: RiskLevel,
     diversificationScore: number,
     recommendations: string[]
   ): void {
@@ -308,3 +308,9 @@ export class MarketData {
     this.timestamp = new Date();
   }
 }
+export type RiskLevel = "low" | "medium" | "high";
+export const RiskLevels: RiskLevel[] = ["low", "medium", "high"];
+export type TransactionStatus = "pending" | "completed" | "failed";
+export type OrderType = "market";
+export type TransactionType = "buy" | "sell";
+export type OrderStatus = "pending" | "executed" | "cancelled";

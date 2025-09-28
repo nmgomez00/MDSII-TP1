@@ -3,7 +3,7 @@ import { MarketData, Asset, Portfolio, RiskAnalysis } from "../models/types";
 import { storage } from "../utils/storage";
 import { getAssetVolatility } from "../utils/assetVolatility";
 import { IPortfolioRiskAnalysisStrategy } from "./marketAnaysisStrategies/RiskStrategies/IPortfolioRiskAnalysisStrategy";
-import { PortfolioRiskLevel } from "./marketAnaysisStrategies/RiskStrategies/IPortfolioRiskAnalysisStrategy";
+import { RiskLevel } from "../models/types"; 
 import { IInvestmentRecommendationStrategy } from "./marketAnaysisStrategies/RecommendationStrategies/IInvestmentRecommendationStrategy";
 import { IStrategyFactory } from "./marketAnaysisStrategies/factory/IStrategyFactory";
 import { BasicStrategyFactory } from "./marketAnaysisStrategies/factory/BasicStrategyFactory";
@@ -24,7 +24,7 @@ export class MarketAnalysisService {
     this.recommendationStrategy = this.strategyFactory.createInvestmentRecommendationStrategy();
   }
   //cambiar la factory de strategies en runtime
-  public setStrategyFactory(factory: IStrategyFactory) {
+  setStrategyFactory(factory: IStrategyFactory) {
     this.strategyFactory = factory;
     this.riskStrategy = this.strategyFactory.createPortfolioRiskAnalysisStrategy();
     this.recommendationStrategy = this.strategyFactory.createInvestmentRecommendationStrategy();
@@ -44,7 +44,7 @@ export class MarketAnalysisService {
     const volatilityScore = this.calculateVolatilityScore(portfolio);
 
     // Determinar nivel de riesgo general
-    let portfolioRisk: PortfolioRiskLevel = this.riskStrategy.analyzeRisk(
+    let portfolioRisk: RiskLevel = this.riskStrategy.analyzeRisk(
       diversificationScore,
       volatilityScore
     );

@@ -1,4 +1,4 @@
-export  type PortfolioRiskLevel = "low" | "medium" | "high";    
+import { RiskLevel } from "../../../models/types"; 
 export interface IPortfolioRiskAnalysisStrategy {
-    analyzeRisk(diversificationScore: number, volatilityScore: number): PortfolioRiskLevel;
+    analyzeRisk(diversificationScore: number, volatilityScore: number): RiskLevel;
 }
