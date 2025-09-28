@@ -4,22 +4,32 @@ import { storage } from "../utils/storage";
 import { getAssetVolatility } from "../utils/assetVolatility";
 import { IPortfolioRiskAnalysisStrategy } from "./marketAnaysisStrategies/RiskStrategies/IPortfolioRiskAnalysisStrategy";
 import { PortfolioRiskLevel } from "./marketAnaysisStrategies/RiskStrategies/IPortfolioRiskAnalysisStrategy";
-import { DefaultRiskCalculationStrategy } from "./marketAnaysisStrategies/RiskStrategies/DefaultRiskCalculatioStrategy";
 import { IInvestmentRecommendationStrategy } from "./marketAnaysisStrategies/RecommendationStrategies/IInvestmentRecommendationStrategy";
-import { BasicInvestmentRecommendationStrategy } from "./marketAnaysisStrategies/RecommendationStrategies/BasicInvestmentRecommendationStrategy";
+import { IStrategyFactory } from "./marketAnaysisStrategies/factory/IStrategyFactory";
+import { BasicStrategyFactory } from "./marketAnaysisStrategies/factory/BasicStrategyFactory";
 
 export class MarketAnalysisService {
   // Estrategia de análisis de riesgo
   private riskStrategy: IPortfolioRiskAnalysisStrategy;
   // Estrategia de recomendación de inversión
   private recommendationStrategy: IInvestmentRecommendationStrategy;
+  // Fábrica de estrategias
+  private strategyFactory: IStrategyFactory;
 
-  constructor() {
-    // Por defecto, usar estrategia de cálculo de riesgo estándar
-    this.riskStrategy = new DefaultRiskCalculationStrategy();
-    // Por defecto, usar estrategia de recomendación básica
-    this.recommendationStrategy = new BasicInvestmentRecommendationStrategy();
+  constructor(strategyFactory?: IStrategyFactory) {
+    // Usar la fábrica proporcionada o la básica por defecto
+    this.strategyFactory = strategyFactory || new BasicStrategyFactory();
+    // Crear estrategias usando la fábrica
+    this.riskStrategy = this.strategyFactory.createPortfolioRiskAnalysisStrategy();
+    this.recommendationStrategy = this.strategyFactory.createInvestmentRecommendationStrategy();
   }
+  //cambiar la factory de strategies en runtime
+  public setStrategyFactory(factory: IStrategyFactory) {
+    this.strategyFactory = factory;
+    this.riskStrategy = this.strategyFactory.createPortfolioRiskAnalysisStrategy();
+    this.recommendationStrategy = this.strategyFactory.createInvestmentRecommendationStrategy();
+  }
+
   // Análisis de riesgo del portafolio
   analyzePortfolioRisk(userId: string): RiskAnalysis {
     const portfolio = storage.getPortfolioByUserId(userId);
@@ -54,14 +64,7 @@ export class MarketAnalysisService {
 
     return riskAnalysis;
   }
-  // Cambiar estrategia de análisis de riesgo
-  setPortfolioRiskStrategy(strategy: IPortfolioRiskAnalysisStrategy): void {
-    this.riskStrategy = strategy;
-  }
-  // Cambiar estrategia de recomendación de inversión
-  setInvestmentRecommendationStrategy(strategy: IInvestmentRecommendationStrategy): void {
-    this.recommendationStrategy = strategy;
-  }
+
   // Calcular score de diversificación - Algoritmo simplificado
   private calculateDiversificationScore(portfolio: Portfolio): number {
     if (portfolio.holdings.length === 0) return 0;

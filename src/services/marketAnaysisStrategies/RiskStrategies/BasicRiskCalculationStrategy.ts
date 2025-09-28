@@ -2,7 +2,7 @@ import {
     IPortfolioRiskAnalysisStrategy, PortfolioRiskLevel
 } from './IPortfolioRiskAnalysisStrategy';
 
-export class DefaultRiskCalculationStrategy implements IPortfolioRiskAnalysisStrategy {
+export class BasicRiskCalculationStrategy implements IPortfolioRiskAnalysisStrategy {
     analyzeRisk(diversificationScore: number, volatilityScore: number): PortfolioRiskLevel {
     let portfolioRisk: PortfolioRiskLevel;
     if (volatilityScore < 30 && diversificationScore > 70) {
