@@ -1,8 +1,25 @@
 // Servicio de análisis de mercado
 import { MarketData, Asset, Portfolio, RiskAnalysis } from "../models/types";
 import { storage } from "../utils/storage";
+import { getAssetVolatility } from "../utils/assetVolatility";
+import { IPortfolioRiskAnalysisStrategy } from "./marketAnaysisStrategies/RiskStrategies/IPortfolioRiskAnalysisStrategy";
+import { PortfolioRiskLevel } from "./marketAnaysisStrategies/RiskStrategies/IPortfolioRiskAnalysisStrategy";
+import { DefaultRiskCalculationStrategy } from "./marketAnaysisStrategies/RiskStrategies/DefaultRiskCalculatioStrategy";
+import { IInvestmentRecommendationStrategy } from "./marketAnaysisStrategies/RecommendationStrategies/IInvestmentRecommendationStrategy";
+import { BasicInvestmentRecommendationStrategy } from "./marketAnaysisStrategies/RecommendationStrategies/BasicInvestmentRecommendationStrategy";
 
 export class MarketAnalysisService {
+  // Estrategia de análisis de riesgo
+  private riskStrategy: IPortfolioRiskAnalysisStrategy;
+  // Estrategia de recomendación de inversión
+  private recommendationStrategy: IInvestmentRecommendationStrategy;
+
+  constructor() {
+    // Por defecto, usar estrategia de cálculo de riesgo estándar
+    this.riskStrategy = new DefaultRiskCalculationStrategy();
+    // Por defecto, usar estrategia de recomendación básica
+    this.recommendationStrategy = new BasicInvestmentRecommendationStrategy();
+  }
   // Análisis de riesgo del portafolio
   analyzePortfolioRisk(userId: string): RiskAnalysis {
     const portfolio = storage.getPortfolioByUserId(userId);
@@ -17,15 +34,10 @@ export class MarketAnalysisService {
     const volatilityScore = this.calculateVolatilityScore(portfolio);
 
     // Determinar nivel de riesgo general
-    let portfolioRisk: "low" | "medium" | "high";
-    if (volatilityScore < 30 && diversificationScore > 70) {
-      portfolioRisk = "low";
-    } else if (volatilityScore < 60 && diversificationScore > 40) {
-      portfolioRisk = "medium";
-    } else {
-      portfolioRisk = "high";
-    }
-
+    let portfolioRisk: PortfolioRiskLevel = this.riskStrategy.analyzeRisk(
+      diversificationScore,
+      volatilityScore
+    );
     // Generar recomendaciones básicas
     const recommendations = this.generateRiskRecommendations(
       diversificationScore,
@@ -42,7 +54,14 @@ export class MarketAnalysisService {
 
     return riskAnalysis;
   }
-
+  // Cambiar estrategia de análisis de riesgo
+  setPortfolioRiskStrategy(strategy: IPortfolioRiskAnalysisStrategy): void {
+    this.riskStrategy = strategy;
+  }
+  // Cambiar estrategia de recomendación de inversión
+  setInvestmentRecommendationStrategy(strategy: IInvestmentRecommendationStrategy): void {
+    this.recommendationStrategy = strategy;
+  }
   // Calcular score de diversificación - Algoritmo simplificado
   private calculateDiversificationScore(portfolio: Portfolio): number {
     if (portfolio.holdings.length === 0) return 0;
@@ -87,30 +106,12 @@ export class MarketAnalysisService {
 
     portfolio.holdings.forEach((holding) => {
       const weight = holding.currentValue / totalValue;
-      const assetVolatility = this.getAssetVolatility(holding.symbol);
+      const assetVolatility = getAssetVolatility(holding.symbol);
       weightedVolatility += weight * assetVolatility;
     });
 
     return Math.min(weightedVolatility, 100);
   }
-
-  // Obtener volatilidad de un activo - Datos simulados
-  private getAssetVolatility(symbol: string): number {
-    // Simulación básica de volatilidad por sector
-    const asset = storage.getAssetBySymbol(symbol);
-    if (!asset) return 50; // Volatilidad por defecto
-
-    const volatilityBySector: { [key: string]: number } = {
-      Technology: 65,
-      Healthcare: 45,
-      Financial: 55,
-      Automotive: 70,
-      "E-commerce": 60,
-    };
-
-    return volatilityBySector[asset.sector] || 50;
-  }
-
   // Generar recomendaciones
   private generateRiskRecommendations(
     diversificationScore: number,
@@ -213,54 +214,13 @@ export class MarketAnalysisService {
       throw new Error("Usuario o portafolio no encontrado");
     }
 
-    const recommendations: any[] = [];
-
-    // Recomendaciones basadas en tolerancia al riesgo
     const allAssets = storage.getAllAssets();
 
-    allAssets.forEach((asset) => {
-      const hasHolding = portfolio.holdings.some(
-        (h) => h.symbol === asset.symbol
-      );
-
-      if (!hasHolding) {
-        let recommendation = "";
-        let priority = 0;
-
-        if (
-          user.riskTolerance === "low" &&
-          this.getAssetVolatility(asset.symbol) < 50
-        ) {
-          recommendation =
-            "Activo de bajo riesgo recomendado para tu perfil conservador";
-          priority = 1;
-        } else if (
-          user.riskTolerance === "high" &&
-          this.getAssetVolatility(asset.symbol) > 60
-        ) {
-          recommendation =
-            "Activo de alto crecimiento potencial para tu perfil agresivo";
-          priority = 2;
-        } else if (user.riskTolerance === "medium") {
-          recommendation = "Activo balanceado adecuado para tu perfil moderado";
-          priority = 1;
-        }
-
-        if (recommendation) {
-          recommendations.push({
-            symbol: asset.symbol,
-            name: asset.name,
-            currentPrice: asset.currentPrice,
-            recommendation: recommendation,
-            priority: priority,
-            riskLevel:
-              this.getAssetVolatility(asset.symbol) > 60 ? "high" : "medium",
-          });
-        }
-      }
-    });
-
-    // Ordenar por prioridad
-    return recommendations.sort((a, b) => b.priority - a.priority).slice(0, 5);
+    // Usar la estrategia de recomendación configurada
+    return this.recommendationStrategy.generateRecommendations(
+      user,
+      portfolio,
+      allAssets
+    );
   }
 }
