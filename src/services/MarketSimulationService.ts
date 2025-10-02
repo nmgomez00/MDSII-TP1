@@ -1,5 +1,5 @@
 // Servicio de simulación de mercado
-import { MarketData, Asset } from "../models/types";
+import { MarketData, Asset, MarketEventType } from "../models/types";
 import { storage } from "../utils/storage";
 import { config } from "../config/config";
 
@@ -133,7 +133,7 @@ export class MarketSimulationService {
   }
 
   // Simular evento de mercado específico
-  simulateMarketEvent(eventType: "bull" | "bear" | "crash" | "recovery"): void {
+  simulateMarketEvent(eventType: MarketEventType): void {
     console.log(`Simulando evento de mercado: ${eventType}`);
 
     const allMarketData = storage.getAllMarketData();

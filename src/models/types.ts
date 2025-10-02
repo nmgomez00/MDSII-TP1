@@ -314,3 +314,4 @@ export type TransactionStatus = "pending" | "completed" | "failed";
 export type OrderType = "market";
 export type TransactionType = "buy" | "sell";
 export type OrderStatus = "pending" | "executed" | "cancelled";
+export type MarketEventType = "bull" | "bear" | "crash" | "recovery";
