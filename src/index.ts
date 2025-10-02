@@ -7,6 +7,7 @@ import { swaggerSpec } from "./config/swagger";
 import apiRoutes from "./routes/api";
 import { requestLogger } from "./middleware/auth";
 import { MarketSimulationService } from "./services/MarketSimulationService";
+import { PortfolioUpdaterSubscriber } from "./services/MarketSimulationSubscribers/portfolioUpdaterSubscriber";
 import { environmentConfig } from "./config/environment";
 
 // Crear aplicación Express
@@ -101,6 +102,11 @@ app.use(
 
 // Inicializar simulación de mercado
 const marketSimulation = MarketSimulationService.getInstance();
+
+// Suscribir al subscriptor
+const portfolioSubscriber = new PortfolioUpdaterSubscriber();
+marketSimulation.subscribe(portfolioSubscriber);
+
 
 // Función para iniciar el servidor
 function startServer() {
