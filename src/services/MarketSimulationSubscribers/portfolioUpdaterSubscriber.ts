@@ -2,7 +2,7 @@ import { storage } from "../../utils/storage";
 import { IMarketSimulationSubscriber } from "./IMarketSimulationSubscriber";
 
 export class PortfolioUpdaterSubscriber implements IMarketSimulationSubscriber {
-    update(marketData?: any): void {
+    update(): void {
         // Obtener todos los usuarios y actualizar sus portafolios
             const allUsers = [
               storage.getUserById("demo_user"),

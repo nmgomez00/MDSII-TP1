@@ -1,3 +1,4 @@
+// interfaz para subscriptores de la simulación de mercado
 export interface IMarketSimulationSubscriber {
-    update(marketData?:any): void;
+    update(): void;
 }

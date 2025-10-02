@@ -18,7 +18,17 @@ class InMemoryStorage {
   private portfolios: Map<string, Portfolio> = new Map();
   private marketData: Map<string, MarketData> = new Map();
 
-  constructor() {
+  private static instance: InMemoryStorage;
+
+  // Patrón Singleton
+  public static getInstance(): InMemoryStorage {
+    if (!InMemoryStorage.instance) {
+      InMemoryStorage.instance = new InMemoryStorage();
+    }
+    return InMemoryStorage.instance;
+  }
+
+  private constructor() {
     this.initializeDefaultData();
   }
 
@@ -157,4 +167,4 @@ class InMemoryStorage {
 }
 
 // Instancia global de almacenamiento
-export const storage = new InMemoryStorage();
+export const storage = InMemoryStorage.getInstance();

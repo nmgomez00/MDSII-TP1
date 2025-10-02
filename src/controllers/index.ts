@@ -160,6 +160,7 @@ export class MarketController {
 
 // Controlador de trading - Métodos largos con múltiples responsabilidades
 export class TradingController {
+
   static async buyAsset(req: Request, res: Response) {
     try {
       const user = req.user;
