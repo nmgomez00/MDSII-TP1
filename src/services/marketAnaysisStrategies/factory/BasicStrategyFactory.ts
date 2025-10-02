@@ -3,6 +3,8 @@ import { IInvestmentRecommendationStrategy } from "../RecommendationStrategies/I
 import { BasicInvestmentRecommendationStrategy } from "../RecommendationStrategies/BasicInvestmentRecommendationStrategy";
 import { IPortfolioRiskAnalysisStrategy } from "../RiskStrategies/IPortfolioRiskAnalysisStrategy";
 import { BasicRiskCalculationStrategy } from "../RiskStrategies/BasicRiskCalculationStrategy";
+import { ITechnicalAnalysisStrategy } from "../TechnicalAnalysisStrategies/ITechnicalAnalysisStrategy";
+import { BasicTechnicalAnalysisStrategy } from "../TechnicalAnalysisStrategies/BasicTechnicalAnalysisStrategy";
 
 export class BasicStrategyFactory implements IStrategyFactory {
   createInvestmentRecommendationStrategy(): IInvestmentRecommendationStrategy {
@@ -10,5 +12,8 @@ export class BasicStrategyFactory implements IStrategyFactory {
   }
   createPortfolioRiskAnalysisStrategy(): IPortfolioRiskAnalysisStrategy {
     return new BasicRiskCalculationStrategy();
+  }
+  createTechnicalAnalysisStrategy(): ITechnicalAnalysisStrategy {
+    return new BasicTechnicalAnalysisStrategy();
   }
 }
