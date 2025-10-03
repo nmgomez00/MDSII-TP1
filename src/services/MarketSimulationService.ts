@@ -32,7 +32,7 @@ export class MarketSimulationService {
     this.subscribers = this.subscribers.filter((sub) => sub !== subscriber);
   }
   // Notificar a todos los subscribers
-  private notifySubscribers(): void {
+  notifySubscribers(): void {
     this.subscribers.forEach((subscriber) => subscriber.update());
   }
   // Iniciar simulación de mercado
@@ -87,7 +87,7 @@ export class MarketSimulationService {
       marketData.timestamp = new Date();
 
       storage.updateMarketData(marketData);
-      this.UpdateAssetPrice(marketData);
+      this.updateAssetPrice(marketData);
     });
     this.notifySubscribers();
   }
@@ -127,12 +127,12 @@ export class MarketSimulationService {
       marketData.timestamp = new Date();
 
       storage.updateMarketData(marketData);
-      this.UpdateAssetPrice(marketData);
+      this.updateAssetPrice(marketData);
     });
     this.notifySubscribers();
   }
 
-  private UpdateAssetPrice(marketData: MarketData): void {
+  private updateAssetPrice(marketData: MarketData): void {
     // Actualizar asset correspondiente
       const asset = storage.getAssetBySymbol(marketData.symbol);
       if (asset) {

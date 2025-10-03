@@ -1,6 +1,5 @@
-// utils/assetVolatility.ts - Función para obtener la volatilidad de un activo
 import { storage } from "./storage";
-
+//Función para obtener la volatilidad de un activo
 export function getAssetVolatility(symbol: string): number {
     // Simulación básica de volatilidad por sector
     const asset = storage.getAssetBySymbol(symbol);

@@ -2,12 +2,11 @@ import { Transaction, TransactionType, User } from "../../models/types";
 import { storage } from "../../utils/storage";
 import { TradeTemplate } from "./TradeTemplate";
 
-export class sellTrade extends TradeTemplate {
+export class SellTrade extends TradeTemplate {
   protected updatePortfolio(
     userId: string,
     symbol: string,
-    quantity: number,
-    executionPrice: number
+    quantity: number
   ): void {
     const portfolio = storage.getPortfolioByUserId(userId);
     if (!portfolio) return;

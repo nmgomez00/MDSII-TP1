@@ -28,8 +28,8 @@ export class MarketAnalysisService {
     this.technicalAnalysisStrategy = this.strategyFactory.createTechnicalAnalysisStrategy();
   }
   //cambiar la factory de strategies en runtime
-  setStrategyFactory(factory: IStrategyFactory) {
-    this.strategyFactory = factory;
+  setStrategyFactory(strategyFactory: IStrategyFactory) {
+    this.strategyFactory = strategyFactory;
     this.riskStrategy = this.strategyFactory.createPortfolioRiskAnalysisStrategy();
     this.recommendationStrategy = this.strategyFactory.createInvestmentRecommendationStrategy();
     this.technicalAnalysisStrategy = this.strategyFactory.createTechnicalAnalysisStrategy();

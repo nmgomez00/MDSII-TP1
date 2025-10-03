@@ -4,15 +4,17 @@ import {
 } from "../models/types";
 import { storage } from "../utils/storage";
 import { BuyTrade } from "./TradingStrategies/BuyTrade";
-import { sellTrade } from "./TradingStrategies/sellTrade";
+import { SellTrade } from "./TradingStrategies/sellTrade";
+import { TradeTemplate } from "./TradingStrategies/TradeTemplate";
 
 export class TradingService {
-  private buyTrade: BuyTrade;
-  private sellTrade: sellTrade;
+  private buyTrade: TradeTemplate;
+  private sellTrade: TradeTemplate;
 
-  constructor() {
-    this.buyTrade = new BuyTrade();
-    this.sellTrade = new sellTrade();
+  constructor(buyTrade?: TradeTemplate, sellTrade?: TradeTemplate) {
+    // si no se pasan estrategias de trading se usan las por defecto
+    this.buyTrade = buyTrade ||new BuyTrade();
+    this.sellTrade = sellTrade || new SellTrade();
   }
   // Ejecutar orden de compra al precio de mercado
   async executeBuyOrder(

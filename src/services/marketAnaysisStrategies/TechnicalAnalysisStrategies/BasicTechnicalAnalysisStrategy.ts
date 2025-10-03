@@ -34,8 +34,8 @@ export class BasicTechnicalAnalysisStrategy implements ITechnicalAnalysisStrateg
     }
       // Calcular SMA - Simulación básica
   private calculateSimpleMovingAverage(
-    symbol: string,
-    periods: number
+    symbol: string
+    , period: number
   ): number {
     const marketData = storage.getMarketDataBySymbol(symbol);
     if (!marketData) return 0;
